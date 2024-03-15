@@ -1,5 +1,5 @@
 <?php
-function layout($content)
+function layout(callable $content)
 {
   ?>
   <!DOCTYPE html>
@@ -41,7 +41,7 @@ function layout($content)
     </header>
     <div class="content">
       <?php
-      echo $content;
+      $content();
       ?>
     </div>
   </body>
