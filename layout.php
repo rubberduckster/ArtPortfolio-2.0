@@ -1,5 +1,5 @@
 <?php
-function layout(callable $content)
+function layout(callable $content, $topline = true)
 {
   ?>
   <!DOCTYPE html>
@@ -39,7 +39,7 @@ function layout(callable $content)
         </div>
       </div>
     </header>
-    <div class="content">
+    <div class="content <?= $topline ? "content-topline" : "" ?>">
       <?php
       $content();
       ?>
@@ -48,4 +48,16 @@ function layout(callable $content)
 
   </html>
   <?php
+}
+
+function errorPage($message)
+{
+  layout(function() use ($message) {
+    ?>
+    <div class="error-page">
+      <h1>Oops itsa gone!</h1>
+      <p><?= $message ?></p>
+    </div>
+    <?php
+  });
 }

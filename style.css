@@ -106,10 +106,6 @@ a {
   margin: 20px 20px;
 }
 
-.content {
-  border-top: white 1px solid;
-}
-
 #rubberducky {
   margin: 50px 50px;
   margin-top: 0px;
@@ -119,8 +115,12 @@ a {
 
 .content {
   display: flex;
-  padding-top: 50px;
   padding-bottom: 50px;
+}
+
+.content-topline {
+  padding-top: 50px;
+  border-top: white 1px solid;
 }
 
 .about-text {
@@ -158,7 +158,11 @@ a {
   box-sizing: border-box;
 }
 
-.image-display-details > div {
+#image-display-date {
+  text-wrap: nowrap;
+}
+
+.image-display-details > form {
   width: 50%;
 }
 
@@ -182,10 +186,24 @@ a {
   align-items: end;
 }
 
+.edit-bar {
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: end;
+  margin: 0 24px;
+  width: fit-content !important;
+}
+
 .nav-bar {
   margin-right: 10px;
   margin-top: 5px;
   display: flex;
   justify-content: end;
   gap: 8px;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
 }
