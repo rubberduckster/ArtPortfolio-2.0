@@ -6,9 +6,11 @@ include "./components/userHandler.php";
 
 $currentImage = $_GET["i"] ?? null;
 
+$escapedCurrentImage = $sql->escape_string($currentImage);
+
 $image = $sql ->query("SELECT images.*, ic.categoryId FROM images 
 LEFT JOIN imageCategories ic ON ic.imageId = images.id 
-WHERE images.id = $currentImage LIMIT 1")->fetch_assoc();
+WHERE images.id = '$escapedCurrentImage' LIMIT 1")->fetch_assoc();
 
 if (!$image) {
   errorPage("Image not found");
@@ -24,7 +26,7 @@ if (($editmode || $deleted) && !verifyUser()) {
 }
 
 if ($deleted) {
-  $sql ->query("DELETE FROM images WHERE id = $currentImage");
+  $sql ->query("DELETE FROM images WHERE id = '$escapedCurrentImage'");
   unlink(__DIR__ . "/images/" . $image["image"]);
   header("Location: /");
 }
@@ -45,14 +47,16 @@ if ($editmode) {
     date='" . $sql->escape_string($date) . "',
     description='" . $sql->escape_string($description) . "'
 
-    WHERE id = $currentImage
+    WHERE id = '$escapedCurrentImage'
     ");
 
+    $escapedCategory = $sql->escape_string($category);
+
     if ($image["categoryId"]) {
-      $sql->query("UPDATE imagecategories SET categoryId=$category WHERE imageId = $currentImage");
+      $sql->query("UPDATE imagecategories SET categoryId='$escapedCategory' WHERE imageId = '$escapedCurrentImage'");
     }
     else {
-      $sql->query("INSERT INTO imagecategories (imageId, categoryID) VALUES ($currentImage, $category");
+      $sql->query("INSERT INTO imagecategories (imageId, categoryID) VALUES ('$escapedCurrentImage', '$escapedCategory'");
     }
 
     header("Location: ?i=$currentImage");

@@ -7,7 +7,9 @@ session_start();
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-$user = $sql->query("SELECT * FROM users WHERE username = '$username'")->fetch_assoc();
+$escapedUsername = $sql->escape_string($username);
+
+$user = $sql->query("SELECT * FROM users WHERE username = '$escapedUsername'")->fetch_assoc();
 
 if (!$user) {
   echo "Wrong login";

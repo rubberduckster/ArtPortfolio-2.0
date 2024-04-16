@@ -15,12 +15,19 @@ $description = $_POST["description"] ?? null;
 $category = $_POST["category"] ?? "";
 $image = $_FILES["image"] ?? null;
 
-
-
 if($title && $date && $image) {
   $path =realpath(__DIR__ . "/images");
   $randomName = rand(0,100000);
-  $ext = explode("/", $image["type"])[1];
+  $typeParts = explode("/", $image["type"]);
+  $ext = $typeParts[1];
+  $type = $typeParts[0];
+
+  if ($type !== "image") {
+    echo "Not an image";
+    exit;
+  }
+
+  $escapedExt = $sql->escape_string($ext);
   
   while (file_exists($path . "/" . $randomName . "." . $ext)) {
     $randomName = rand(0, 100000);
@@ -30,15 +37,17 @@ if($title && $date && $image) {
     '" . $sql->escape_string($title) . "',
     '" . $sql->escape_string($date) . "',
     '" . $sql->escape_string($description) . "',
-    '" . $randomName . "." . $ext ."',
+    '$randomName.$escapedExt',
     '0 0'
     )");
+
+    $escapedCategory = $sql->escape_string($category);
 
     if (!empty ($category)) {
       $newId = $sql->query("SELECT id FROM images ORDER BY id DESC LIMIT 1")->fetch_assoc()["id"];
       $sql->query("INSERT INTO imageCategories(imageId, categoryId) VALUES (
         $newId,
-        $category
+        '$escapedCategory'
       )");
     }
 }
@@ -63,7 +72,7 @@ layout(function() {
         <?php categoryDropdown() ?>
       <div>
         <label for="image">Image</label>
-        <input type="file" name="image" required>
+        <input type="file" name="image" accept="image/*" required>
       </div>
       <div>
         <input type="submit">

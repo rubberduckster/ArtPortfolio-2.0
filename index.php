@@ -12,7 +12,8 @@ $categories = $sql->query("SELECT * FROM categories")->fetch_all(MYSQLI_ASSOC);
 
 $imageQuery = "SELECT * FROM images";
 if ($currentCategory) {
-  $imageQuery .= " WHERE id in (SELECT imageId FROM imageCategories WHERE categoryId = $currentCategory)";
+  $escapedCurrentCategory = $sql->escape_string($currentCategory);
+  $imageQuery .= " WHERE id in (SELECT imageId FROM imageCategories WHERE categoryId = '$escapedCurrentCategory')";
 }
 $images = $sql->query($imageQuery)->fetch_all(MYSQLI_ASSOC);
 
