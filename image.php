@@ -53,10 +53,10 @@ if ($editmode) {
     $escapedCategory = $sql->escape_string($category);
 
     if ($image["categoryId"]) {
-      $sql->query("UPDATE imagecategories SET categoryId='$escapedCategory' WHERE imageId = '$escapedCurrentImage'");
+      $sql->query("UPDATE imageCategories SET categoryId='$escapedCategory' WHERE imageId = '$escapedCurrentImage'");
     }
     else {
-      $sql->query("INSERT INTO imagecategories (imageId, categoryID) VALUES ('$escapedCurrentImage', '$escapedCategory'");
+      $sql->query("INSERT INTO imageCategories (imageId, categoryID) VALUES ('$escapedCurrentImage', '$escapedCategory'");
     }
 
     header("Location: ?i=$currentImage");
